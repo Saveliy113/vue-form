@@ -1,7 +1,10 @@
 <template>
   <div>
-    <h1>Hello World!</h1>
+    <Header />
+    <router-view />
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Header from "src/components/layout/Header.vue";
+</script>
