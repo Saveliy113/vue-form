@@ -1,9 +1,9 @@
 <template>
-  <SignUpForm />
+  <SignupForm />
 </template>
 
 <script setup lang="ts">
-import SignUpForm from "src/components/forms/SignUpForm.vue";
+import SignupForm from "src/components/forms/SignupForm.vue";
 import { ref } from "vue";
 import { useMeta } from "quasar";
 
@@ -15,6 +15,4 @@ const meta = ref({
 useMeta(meta.value);
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
