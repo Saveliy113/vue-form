@@ -5,6 +5,12 @@ export const useSignupStore = defineStore("signup", {
     step: 1,
     email: "",
     phone: "",
+    password: '',
+    errors: {
+      email: false,
+      phone: false,
+      password: false,
+    },
   }),
   persist: true,
 });

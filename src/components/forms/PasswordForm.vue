@@ -5,22 +5,49 @@
       label="Create password"
       type="password"
       :raw="true"
-      v-model="phone"
-      v-bind="phoneProps"
+      v-model="password"
+      v-bind="passwordProps"
       outlined
-      :dense="dense"
     />
-    <div class="hints">
-      <p>● 8 or more characters</p>
-      <p>● Use 2 of the following: letters, numbers or symbols</p>
-    </div>
+    <Transition name="fade">
+      <div v-if="!errors.password" class="hints">
+        <p>● 8 or more characters</p>
+        <p>● Use 2 of the following: letters, numbers or symbols</p>
+      </div>
+    </Transition>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { passwordSchema } from "src/schemas/signupSchema";
+import { useSignupStore } from "src/stores/signUpStore";
+import { useForm } from "vee-validate";
+import { watch } from "vue";
+import { quasarConfig } from "./quasarConfig";
+
+const signupStore = useSignupStore();
+
+const { defineField, errors } = useForm({
+  validationSchema: passwordSchema,
+  initialValues: {
+    password: signupStore.password,
+  },
+});
+
+const [password, passwordProps] = defineField("password", quasarConfig);
+watch(password, (newPassword) => {
+  signupStore.password = newPassword;
+});
+
+watch(errors, (updatedErrors) => {
+  if (updatedErrors.password) {
+    signupStore.errors.password = true;
+  } else signupStore.errors.password = false;
+});
+</script>
 
 <style lang="scss" scoped>
-> .password__form {
+.password__form {
   width: 55%;
 
   > .hints {

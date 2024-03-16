@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Header v-if="route.query.step !== 'phone-verify'" />
+    <Header />
     <router-view />
-    <Footer v-if="route.query.step !== 'phone-verify'" />
+    <Footer />
   </div>
 </template>
 

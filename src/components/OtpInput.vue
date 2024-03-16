@@ -3,27 +3,21 @@
     <q-input
       v-for="i in length"
       :key="i"
+      class="digit__input"
+      style="text-align: center"
       :ref="(el) => updateFieldRef(el, i - 1)"
       v-model="fieldValues[i - 1]"
       v-bind="$attrs"
       @keyup="onKeyUp($event, i - 1)"
       @update:model-value="onUpdate($event, i - 1)"
       mask="#"
-      class="input"
       outlined
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import {
-  defineProps,
-  computed,
-  ref,
-  onBeforeUpdate,
-  watch,
-  defineEmits,
-} from "vue";
+import { defineProps, computed, ref, onBeforeUpdate, watch } from "vue";
 import { useRouter } from "vue-router";
 
 const props = defineProps({
@@ -100,12 +94,14 @@ const onKeyUp = (evnt, index) => {
 <style lang="scss" scoped>
 .otp__input {
   display: flex;
+  justify-content: center;
   gap: 10px;
-  margin-top: 50px;
+  margin-top: 70px;
 
-  > .input {
-    width: 50px;
-    font-size: 1rem;
+  .digit__input {
+    text-align: center;
+    width: 60px;
+    font-size: 1.2rem;
   }
 }
 </style>

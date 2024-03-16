@@ -1,15 +1,17 @@
 <template>
   <div class="header">
-    <q-btn
-      v-if="route.query.step"
-      class="back__btn"
-      @click="this.$router.go(-1)"
-      flat
-      round
-      color="primary"
-      icon="west"
-      text-color="grey-6"
-    />
+    <Transition name="fade">
+      <q-btn
+        v-if="route.query.step"
+        class="back__btn"
+        @click="router.go(-1)"
+        flat
+        round
+        color="primary"
+        icon="west"
+        text-color="grey-6"
+      />
+    </Transition>
     <router-link to="/" class="logo__link">
       <img src="/logo.png" alt="paypal_logo" />
     </router-link>
@@ -17,9 +19,10 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink, useRoute } from "vue-router";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 </script>
 
 <style lang="scss" scoped>

@@ -1,17 +1,43 @@
 <template>
-  <div class="phone__verify" v-if="route.query.step === 'phone-verify'">
+  <div class="phone__verify">
     <div class="verify__wrapper">
+      <q-btn
+        class="back__btn"
+        @click="
+          () =>
+            router.push({
+              path: '/',
+              query: {
+                step: 'phone',
+              },
+            })
+        "
+        flat
+        round
+        color="black"
+        icon="close"
+        text-color="grey-6"
+      />
       <div class="verify__header">
         <h4>Confirm your phone</h4>
         <p class="code__text">Code sent to {{ `+7${signupStore.phone}` }}</p>
         <p class="resend__btn">Resend code</p>
+        <OtpInput />
       </div>
       <OtpInput :input-length="6" />
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useSignupStore } from "src/stores/signUpStore";
+import OtpInput from "../OtpInput.vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const signupStore = useSignupStore();
+</script>
 
 <style lang="scss" scoped>
 .phone__verify {
@@ -24,30 +50,36 @@
   z-index: 99;
 
   > .verify__wrapper {
+    position: relative;
     width: 45%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     background-color: white;
     margin: 0 auto;
 
+    > .back__btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
     > .verify__header {
       width: 100%;
-      text-align: center;
+      height: 200px;
       padding-top: 100px;
+      text-align: center;
 
       > .code__text {
         margin-top: 0.3rem;
         font-size: 1.2rem;
+        font-weight: 400;
       }
 
       > .resend__btn {
         width: fit-content;
         margin: 0 auto;
         color: #2373c8;
-        font-size: 1rem;
-        font-weight: bold;
+        font-size: 1.2rem;
+        font-weight: 800;
         cursor: pointer;
         transition: all 0.2s ease-in;
         border-bottom: 1px solid transparent;
@@ -55,6 +87,10 @@
         &:hover {
           color: darken(#2373c8, 5%);
           border-bottom: 1px solid darken(#2373c8, 5%);
+        }
+
+        &:active {
+          transform: scale(93%);
         }
       }
     }

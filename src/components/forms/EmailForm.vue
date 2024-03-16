@@ -21,7 +21,7 @@ import { emailSchema } from "src/schemas/signupSchema";
 
 const signupStore = useSignupStore();
 
-const { defineField, handleSubmit, resetForm, errors } = useForm({
+const { defineField, errors } = useForm({
   validationSchema: emailSchema,
   initialValues: {
     email: signupStore.email,
@@ -32,6 +32,12 @@ const { defineField, handleSubmit, resetForm, errors } = useForm({
 const [email, emailProps] = defineField("email", quasarConfig);
 watch(email, (newValue) => {
   signupStore.email = newValue;
+});
+
+watch(errors, (updatedErrors) => {
+  if (updatedErrors.email) {
+    signupStore.errors.email = true;
+  } else signupStore.errors.email = false;
 });
 </script>
 
