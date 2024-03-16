@@ -5,6 +5,7 @@
       <h5 v-if="!route.query.step">Sign up for PayPal</h5>
       <h5 v-if="route.query.step === 'phone'">Phone number</h5>
       <h5 v-if="route.query.step === 'password'">Create password</h5>
+      <h5 v-if="route.query.step === 'personal-info'">Personal info</h5>
       <Transition name="fade" mode="out-in">
         <EmailForm v-if="!route.query.step" />
         <PhoneForm v-else-if="route.query.step === 'phone'" />
@@ -14,7 +15,8 @@
         @click="onSubmit"
         :disable="
           (!route.query.step && signupStore.errors.email) ||
-          (route.query.step === 'phone' && signupStore.errors.phone)
+          (route.query.step === 'phone' && signupStore.errors.phone) ||
+          (route.query.step === 'password' && signupStore.errors.password)
         "
         class="btn"
         rounded
@@ -55,6 +57,14 @@ const onSubmit = () => {
         path: "/",
         query: {
           step: "phone-verify",
+        },
+      });
+      break;
+    case "password":
+      router.push({
+        path: "/",
+        query: {
+          step: "personal-info",
         },
       });
       break;
