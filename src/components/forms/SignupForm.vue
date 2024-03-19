@@ -13,12 +13,14 @@
         <h5>Your address</h5>
         <p>Make sure to use your billing address.</p>
       </div>
+      <h5 v-if="route.query.step === 'card'">Link a card</h5>
       <Transition name="fade" mode="out-in">
         <EmailForm v-if="!route.query.step" />
         <PhoneForm v-else-if="route.query.step === 'phone'" />
         <PasswordForm v-else-if="route.query.step === 'password'" />
         <PersonalInfoForm v-else-if="route.query.step === 'personal-info'" />
         <AddressForm v-else-if="route.query.step === 'address'" />
+        <LinkCardForm v-else-if="route.query.step === 'card'" />
       </Transition>
       <q-btn
         @click="onSubmit"
@@ -47,6 +49,7 @@ import PhoneVerify from "./PhoneVerify.vue";
 import PasswordForm from "./PasswordForm.vue";
 import PersonalInfoForm from "./PersonalInfoForm.vue";
 import AddressForm from "./AddressForm.vue";
+import LinkCardForm from "./LinkCardForm.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -84,6 +87,14 @@ const onSubmit = () => {
         path: "/",
         query: {
           step: "address",
+        },
+      });
+      break;
+    case "address":
+      router.push({
+        path: "/",
+        query: {
+          step: "card",
         },
       });
       break;
