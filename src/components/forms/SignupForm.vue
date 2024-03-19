@@ -5,11 +5,15 @@
       <h5 v-if="!route.query.step">Sign up for PayPal</h5>
       <h5 v-if="route.query.step === 'phone'">Phone number</h5>
       <h5 v-if="route.query.step === 'password'">Create password</h5>
-      <h5 v-if="route.query.step === 'personal-info'">Personal info</h5>
+      <div class="text-center" v-if="route.query.step === 'personal-info'">
+        <h5 >Personal info</h5>
+        <p>Make sure this matches your official ID.</p>
+      </div>
       <Transition name="fade" mode="out-in">
         <EmailForm v-if="!route.query.step" />
         <PhoneForm v-else-if="route.query.step === 'phone'" />
         <PasswordForm v-else-if="route.query.step === 'password'" />
+        <PersonalInfoForm v-else-if="route.query.step === 'personal-info'" />
       </Transition>
       <q-btn
         @click="onSubmit"
@@ -36,6 +40,7 @@ import { useRoute, useRouter } from "vue-router";
 import PhoneForm from "./PhoneForm.vue";
 import PhoneVerify from "./PhoneVerify.vue";
 import PasswordForm from "./PasswordForm.vue";
+import PersonalInfoForm from "./PersonalInfoForm.vue";
 
 const route = useRoute();
 const router = useRouter();
