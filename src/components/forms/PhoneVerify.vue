@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSignupStore } from "src/stores/signUpStore";
+import { useSignupStore } from "src/stores/signupStore";
 import OtpInput from "../OtpInput.vue";
 import { useRouter } from "vue-router";
 

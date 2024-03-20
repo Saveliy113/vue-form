@@ -2,7 +2,7 @@
   <div class="header">
     <Transition name="fade">
       <q-btn
-        v-if="route.query.step"
+        v-if="route.query.step && route.query.step !== 'services'"
         class="back__btn"
         @click="router.go(-1)"
         flat

@@ -13,6 +13,10 @@
         <h5>Your address</h5>
         <p>Make sure to use your billing address.</p>
       </div>
+      <div class="text-center" v-if="route.query.step === 'services'">
+        <h5>What do you want to try first?</h5>
+        <p>Join over 400 million people using PayPal globally.</p>
+      </div>
       <h5 v-if="route.query.step === 'card'">Link a card</h5>
       <Transition name="fade" mode="out-in">
         <EmailForm v-if="!route.query.step" />
@@ -95,7 +99,7 @@ const onSubmit = () => {
       router.push({
         path: "/",
         query: {
-          step: "card",
+          step: "services",
         },
       });
       break;
