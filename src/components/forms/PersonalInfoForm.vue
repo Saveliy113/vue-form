@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import { personalInfoSchema } from 'src/schemas/signupSchema';
-import { useSignupStore } from 'src/stores/signUpStore';
+import { useSignupStore } from 'src/stores/signupStore';
 import { ref, watch } from 'vue';
 import { quasarConfig } from './quasarConfig';
 import { useForm } from 'vee-validate';

@@ -33,9 +33,3 @@ export const personalInfoSchema = yup.object({
     message: 'Type date fully'
   }),
 })
-
-export const signupSchema = yup.object().shape({
-  email: emailSchema,
-  phone: phoneSchema,
-  passwordSchema: passwordSchema,
-});
