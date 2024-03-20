@@ -28,7 +28,8 @@
           (!route.query.step && signupStore.errors.email) ||
           (route.query.step === 'phone' && signupStore.errors.phone) ||
           (route.query.step === 'password' && signupStore.errors.password) ||
-          (route.query.step === 'personal-info' && signupStore.errors.personalInfo)
+          (route.query.step === 'personal-info' && signupStore.errors.personalInfo) ||
+          (route.query.step === 'address' && signupStore.errors.addressInfo) 
         "
         class="btn"
         rounded
