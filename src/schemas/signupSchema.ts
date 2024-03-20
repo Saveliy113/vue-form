@@ -23,6 +23,17 @@ export const passwordSchema = yup.object({
     ),
 });
 
+export const personalInfoSchema = yup.object({
+  nationality:  yup.string().required('Choose nationality'),
+  familyName: yup.string().required('Type family name'),
+  firstName: yup.string().required('Type first name'),
+  idType: yup.string().required('Choose ID type'),
+  idNumber: yup.string().required('Type ID number'),
+  birthDate: yup.string().required('Type birth date').matches(/^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/,  {
+    message: 'Type date fully'
+  }),
+})
+
 export const signupSchema = yup.object().shape({
   email: emailSchema,
   phone: phoneSchema,

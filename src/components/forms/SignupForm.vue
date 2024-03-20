@@ -27,7 +27,8 @@
         :disable="
           (!route.query.step && signupStore.errors.email) ||
           (route.query.step === 'phone' && signupStore.errors.phone) ||
-          (route.query.step === 'password' && signupStore.errors.password)
+          (route.query.step === 'password' && signupStore.errors.password) ||
+          (route.query.step === 'personal-info' && signupStore.errors.personalInfo)
         "
         class="btn"
         rounded
@@ -41,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSignupStore } from "src/stores/signUpStore";
+import { useSignupStore } from "src/stores/signupStore";
 import EmailForm from "./EmailForm.vue";
 import { useRoute, useRouter } from "vue-router";
 import PhoneForm from "./PhoneForm.vue";
@@ -53,7 +54,6 @@ import LinkCardForm from "./LinkCardForm.vue";
 
 const route = useRoute();
 const router = useRouter();
-
 const signupStore = useSignupStore();
 
 const onSubmit = () => {
