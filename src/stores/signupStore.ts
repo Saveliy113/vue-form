@@ -14,11 +14,18 @@ export const useSignupStore = defineStore("signup", {
       idNumber: '',
       birthDate: '',
     },
+    addressInfo: {
+      address: '',
+      city: '',
+      district: '',
+      agreement: '',
+    },
     errors: {
       email: false,
       phone: false,
       password: false,
-      personalInfo: false
+      personalInfo: false,
+      addressInfo: false,
     },
   }),
   persist: true,

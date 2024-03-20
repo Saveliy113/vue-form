@@ -116,7 +116,6 @@ watch(birthDate, (newBirthDate) => {
 });
 
 watch(errors, (updatedErrors) => {
-  console.log(Object.entries(updatedErrors));
   if (Object.entries(updatedErrors).length) {
     signupStore.errors.personalInfo = true;
   } else signupStore.errors.personalInfo = false;

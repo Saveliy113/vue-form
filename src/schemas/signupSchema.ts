@@ -33,3 +33,10 @@ export const personalInfoSchema = yup.object({
     message: 'Type date fully'
   }),
 })
+
+export const addressSchema = yup.object({
+  address: yup.string().required('Type address'),
+  city: yup.string().required('Type city'),
+  district: yup.string().required('Type district'),
+  agreement: yup.boolean().oneOf([true], 'You must agree with PayPal policies')
+})
