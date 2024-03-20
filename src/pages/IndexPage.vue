@@ -1,6 +1,6 @@
 <template>
   <SignupForm v-if="route.query.step !== 'services'" />
-  <div class="services">
+  <div class="services" v-if="route.query.step === 'services'">
     <div class="service">
       <div class="icon">
         <q-icon name="lock" />
