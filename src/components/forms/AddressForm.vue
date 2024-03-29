@@ -54,10 +54,11 @@ import { useSignupStore } from 'src/stores/signupStore';
 import { useForm } from 'vee-validate';
 import { onMounted, ref, watch } from 'vue';
 import { quasarConfig } from './quasarConfig';
+import { AddressInfo } from 'src/stores/types';
 
 const signupStore = useSignupStore();
 
-const { defineField, errors } = useForm({
+const { defineField, errors } = useForm<AddressInfo>({
   validationSchema: addressSchema,
   initialValues: {
     address: signupStore.addressInfo.address,

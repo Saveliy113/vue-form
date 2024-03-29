@@ -72,6 +72,9 @@ import { useSignupStore } from 'src/stores/signupStore';
 import { onMounted, ref, watch } from 'vue';
 import { quasarConfig } from './quasarConfig';
 import { useForm } from 'vee-validate';
+import { PersonalInfo } from 'src/stores/types';
+
+const options = ref(['Kazakh', , 'Russian', 'Ukrainian']);
 
 const props = defineProps({
   submit: {
@@ -82,7 +85,7 @@ const props = defineProps({
 
 const signupStore = useSignupStore();
 
-const { defineField, errors } = useForm({
+const { defineField, errors } = useForm<PersonalInfo>({
   validationSchema: personalInfoSchema,
   initialValues: {
       nationality:  signupStore.personalInfo.nationality,
@@ -131,9 +134,6 @@ watch(errors, (updatedErrors) => {
   } else signupStore.errors.personalInfo = false;
 });
 
-
-const options = ref(['Kazakh', , 'Russian', 'Ukrainian']);
-
 onMounted(() => {
   if (nationalityRef.value) {
     nationalityRef.value.focus();
@@ -141,9 +141,6 @@ onMounted(() => {
 });
 
 watch(signupStore.personalInfo, () => {
-  console.log('Fullfilled');
-  console.log(Object.values(signupStore.personalInfo).filter(value => !value));
-  
   if (!Object.values(signupStore.personalInfo).filter(value => !value).length) {
     signupStore.personalInfoFullfilled = true;
   };

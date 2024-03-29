@@ -21,6 +21,7 @@ import { useForm } from "vee-validate";
 import { onMounted, watch } from "vue";
 import { quasarConfig } from "./quasarConfig";
 import { emailSchema } from "src/schemas/signupSchema";
+import { RootState } from 'src/stores/types';
 
 const signupStore = useSignupStore();
 
@@ -31,11 +32,10 @@ const props = defineProps({
   }
 })
 
-const { defineField, errors } = useForm({
+const { defineField, errors } = useForm<Pick<RootState, 'email'>>({
   validationSchema: emailSchema,
   initialValues: {
     email: signupStore.email,
-    phone: signupStore.phone,
   },
 });
 

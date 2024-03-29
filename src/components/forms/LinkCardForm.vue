@@ -99,6 +99,7 @@ import { quasarConfig } from './quasarConfig';
 import { useRoute, useRouter } from 'vue-router';
 import JSConfetti from 'js-confetti';
 import { useQuasar } from 'quasar';
+import { CardInfo } from 'src/stores/types';
 
 const signupStore = useSignupStore();
 const route = useRoute();
@@ -130,7 +131,7 @@ const onSubmit = () => {
   }
 }
 
-const { defineField, errors } = useForm({
+const { defineField, errors } = useForm<CardInfo>({
   validationSchema: cardSchema,
   initialValues: {
     card: signupStore.cardInfo.card,
@@ -168,18 +169,18 @@ watch(billingAddress, (newBillingAddress) => {
 });
 
 watch(signupStore.cardInfo, () => {
-  console.log(Object.values(signupStore.cardInfo).filter(value => !value))
   if (!Object.values(signupStore.cardInfo).filter(value => !value).length) {
     signupStore.cardInfoFullfilled = true;
   };
 })
 
 onMounted(() => {
+  jsConfetti = new JSConfetti();
+  
   if (cardRef.value) {
     cardRef.value.focus();
   }
 
-  jsConfetti = new JSConfetti();
 });
 
 </script>

@@ -23,6 +23,7 @@ import { useSignupStore } from "src/stores/signupStore";
 import { useForm } from "vee-validate";
 import { quasarConfig } from "./quasarConfig";
 import { phoneSchema } from "src/schemas/signupSchema";
+import { RootState } from "src/stores/types";
 
 const signupStore = useSignupStore();
 
@@ -35,7 +36,7 @@ const props = defineProps({
 
 const phoneRef = ref<HTMLInputElement | null>(null)
 
-const { defineField, errors } = useForm({
+const { defineField, errors } = useForm<Pick<RootState, 'phone'>>({
   validationSchema: phoneSchema,
   initialValues: {
     phone: signupStore.phone,

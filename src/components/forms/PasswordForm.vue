@@ -26,7 +26,7 @@ import { useSignupStore } from "src/stores/signupStore";
 import { useForm } from "vee-validate";
 import { onMounted, ref, watch } from "vue";
 import { quasarConfig } from "./quasarConfig";
-import { log } from "console";
+import { RootState } from "src/stores/types";
 
 const props = defineProps({
   submit: {
@@ -39,7 +39,7 @@ const passwordRef = ref<HTMLInputElement | null>(null)
 
 const signupStore = useSignupStore();
 
-const { defineField, errors } = useForm({
+const { defineField, errors } = useForm<Pick<RootState, 'password'>>({
   validationSchema: passwordSchema,
   initialValues: {
     password: signupStore.password,
@@ -58,8 +58,6 @@ watch(errors, (updatedErrors) => {
 });
 
 onMounted(() => {
-  // console.log('Disabled Loading');
-  // signupStore.loading = false;
   if (passwordRef.value) {
     passwordRef.value.focus();
   }
