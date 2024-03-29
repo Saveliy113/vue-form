@@ -1,6 +1,7 @@
 <template>
   <div class="address__form">
     <q-input
+      ref="addressRef"
       class="address__input"
       type="text"
       label="Street name and house number"
@@ -51,7 +52,7 @@
 import { addressSchema } from 'src/schemas/signupSchema';
 import { useSignupStore } from 'src/stores/signupStore';
 import { useForm } from 'vee-validate';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { quasarConfig } from './quasarConfig';
 
 const signupStore = useSignupStore();
@@ -66,6 +67,7 @@ const { defineField, errors } = useForm({
   },
 });
 
+const addressRef = ref<HTMLInputElement | null>(null)
 const [address, addressProps] = defineField("address", quasarConfig);
 watch(address, (newaddress) => {
   signupStore.addressInfo.address = newaddress;
@@ -96,6 +98,12 @@ watch(signupStore.addressInfo, () => {
   if (!Object.values(signupStore.addressInfo).filter(value => !value).length) {
     signupStore.addressInfoFullfilled = true;
   };
+})
+
+onMounted(() => {
+  if (addressRef.value) {
+    addressRef.value.focus();
+  }
 })
 </script>
 

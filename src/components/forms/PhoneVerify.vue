@@ -22,7 +22,6 @@
         <h4>Confirm your phone</h4>
         <p class="code__text">Code sent to {{ `+7${signupStore.phone}` }}</p>
         <p class="resend__btn">Resend code</p>
-        <!-- <OtpInput /> -->
       </div>
       <OtpInput :input-length="6" />
     </div>

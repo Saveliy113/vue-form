@@ -17,8 +17,11 @@
 </template>
 
 <script setup lang="ts">
+import { useSignupStore } from "src/stores/signupStore";
 import { defineProps, computed, ref, onBeforeUpdate, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
+
+const signupStore = useSignupStore();
 
 const props = defineProps({
   inputLength: {
@@ -43,10 +46,16 @@ watch(
     if (length.value === notNullFields.length) {
       otp.value = fieldValues.value.filter((value) => value).join("");
       fields.value[length.value - 1].blur();
-      router.push({
-        path: "/",
-        query: { step: "password" },
-      });
+
+      signupStore.loading = true;
+      
+      setTimeout(() => {
+        signupStore.loading = false;
+        router.push({
+          path: "/",
+          query: { step: "password" },
+        });
+      }, 2500);
     }
   },
   { deep: true }

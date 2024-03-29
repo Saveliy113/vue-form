@@ -100,32 +100,35 @@ import { useRoute, useRouter } from 'vue-router';
 import JSConfetti from 'js-confetti';
 import { useQuasar } from 'quasar';
 
-let jsConfetti: any; 
+const signupStore = useSignupStore();
+const route = useRoute();
+const router = useRouter();
 const $q = useQuasar();
+let jsConfetti: any; 
+
 
 const onSubmit = () => {
   if (route.query.step === 'card') {
-    router.push({
-      path: '/',
-        query: {
-          step: 'card-success',
-        }
-      })
+    signupStore.loading = true;
+    setTimeout(() => {
+      signupStore.loading = false;
+      router.push({
+        path: '/',
+          query: {
+            step: 'card-success',
+          }
+        })
+    }, 2500)
     } else {
       jsConfetti.addConfetti();
       
       $q.notify({
-        message: 'You have successfully registered!',
+        message: 'Sign up completed',
         position: 'bottom',
         type: 'positive'
       });
   }
 }
-
-const route = useRoute();
-const router = useRouter();
-
-const signupStore = useSignupStore();
 
 const { defineField, errors } = useForm({
   validationSchema: cardSchema,

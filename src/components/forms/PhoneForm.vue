@@ -54,6 +54,8 @@ watch(errors, (updatedErrors) => {
 });
 
 onMounted(() => {
+  signupStore.loading = false;
+
   if (phoneRef.value) {
     phoneRef.value.focus();
   }

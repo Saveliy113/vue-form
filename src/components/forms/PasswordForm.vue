@@ -26,6 +26,7 @@ import { useSignupStore } from "src/stores/signupStore";
 import { useForm } from "vee-validate";
 import { onMounted, ref, watch } from "vue";
 import { quasarConfig } from "./quasarConfig";
+import { log } from "console";
 
 const props = defineProps({
   submit: {
@@ -57,6 +58,8 @@ watch(errors, (updatedErrors) => {
 });
 
 onMounted(() => {
+  // console.log('Disabled Loading');
+  // signupStore.loading = false;
   if (passwordRef.value) {
     passwordRef.value.focus();
   }

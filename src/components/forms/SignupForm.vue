@@ -51,14 +51,12 @@ import PersonalInfoForm from "./PersonalInfoForm.vue";
 import AddressForm from "./AddressForm.vue";
 import LinkCardForm from "./LinkCardForm.vue";
 import { computed } from "vue";
+import { useQuasar } from 'quasar';
 
+const $q = useQuasar();
 const route = useRoute();
 const router = useRouter();
 const signupStore = useSignupStore();
-
-const submit = () => {
-  console.log(123)
-}
 
 const nextButtonDisabled = computed(() => {
   return (!route.query.step && (signupStore.errors.email || !signupStore.email)) ||
@@ -103,12 +101,22 @@ const onSubmit = () => {
       });
       break;
     case "address":
-      router.push({
-        path: "/",
-        query: {
-          step: "services",
-        },
-      });
+      signupStore.loading = true;
+      setTimeout(() => {
+        signupStore.loading = false;
+        $q.notify({
+          message: 'Account created successfully!',
+          type: 'positive',
+          position: 'bottom'
+        })
+        router.push({
+          path: "/",
+          query: {
+            step: "services",
+          },
+        });
+
+      }, 2500)
       break;
   }
 };

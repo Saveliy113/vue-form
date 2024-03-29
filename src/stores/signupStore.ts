@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 
 export const useSignupStore = defineStore("signup", {
   state: () => ({
+    loading: false,
     step: 1,
     email: "",
     phone: "",
