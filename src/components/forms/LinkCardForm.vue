@@ -78,12 +78,7 @@
         </p>
       </div>
 
-      <q-btn @click="router.push({
-        path: '/',
-        query: {
-          step: 'card-success',
-        }
-        })" 
+      <q-btn @click="onSubmit" 
         class="link__btn" 
         color="primary" 
         rounded
@@ -102,6 +97,30 @@ import { useForm } from 'vee-validate';
 import { onMounted, ref, watch } from 'vue';
 import { quasarConfig } from './quasarConfig';
 import { useRoute, useRouter } from 'vue-router';
+import JSConfetti from 'js-confetti';
+import { useQuasar } from 'quasar';
+
+let jsConfetti: any; 
+const $q = useQuasar();
+
+const onSubmit = () => {
+  if (route.query.step === 'card') {
+    router.push({
+      path: '/',
+        query: {
+          step: 'card-success',
+        }
+      })
+    } else {
+      jsConfetti.addConfetti();
+      
+      $q.notify({
+        message: 'You have successfully registered!',
+        position: 'bottom',
+        type: 'positive'
+      });
+  }
+}
 
 const route = useRoute();
 const router = useRouter();
@@ -156,7 +175,10 @@ onMounted(() => {
   if (cardRef.value) {
     cardRef.value.focus();
   }
+
+  jsConfetti = new JSConfetti();
 });
+
 </script>
 
 <style lang="scss" scoped>
