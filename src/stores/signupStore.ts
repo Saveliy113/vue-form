@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
+import { RootState } from "./types";
 
 export const useSignupStore = defineStore("signup", {
-  state: () => ({
+  state: (): RootState => ({
     loading: false,
-    step: 1,
-    email: "",
-    phone: "",
+    email: '',
+    phone: '',
     password: '',
     personalInfo: {
       nationality:  '',
