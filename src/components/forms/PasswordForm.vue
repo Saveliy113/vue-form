@@ -7,6 +7,8 @@
       :raw="true"
       v-model="password"
       v-bind="passwordProps"
+      @keydown.enter="submit"
+      ref="passwordRef"
       outlined
     />
     <Transition name="fade">
@@ -20,10 +22,19 @@
 
 <script setup lang="ts">
 import { passwordSchema } from "src/schemas/signupSchema";
-import { useSignupStore } from "src/stores/signUpStore";
+import { useSignupStore } from "src/stores/signupStore";
 import { useForm } from "vee-validate";
-import { watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { quasarConfig } from "./quasarConfig";
+
+const props = defineProps({
+  submit: {
+    required: true,
+    type: Function,
+  }
+});
+
+const passwordRef = ref<HTMLInputElement | null>(null)
 
 const signupStore = useSignupStore();
 
@@ -44,11 +55,17 @@ watch(errors, (updatedErrors) => {
     signupStore.errors.password = true;
   } else signupStore.errors.password = false;
 });
+
+onMounted(() => {
+  if (passwordRef.value) {
+    passwordRef.value.focus();
+  }
+})
 </script>
 
 <style lang="scss" scoped>
 .password__form {
-  width: 55%;
+  width: 470px;
 
   > .hints {
     position: relative;

@@ -7,6 +7,7 @@
       hide-bottom-space
       v-model="nationality" 
       v-bind="nationalityProps" 
+      ref="nationalityRef"
       :options="options" 
       label="Nationality" 
     />  
@@ -60,6 +61,7 @@
           hide-bottom-space
           v-model="birthDate"
           v-bind="birthDateProps" 
+          @keydown.enter="submit"
         />
   </div>
 </template>
@@ -67,9 +69,16 @@
 <script setup lang="ts">
 import { personalInfoSchema } from 'src/schemas/signupSchema';
 import { useSignupStore } from 'src/stores/signupStore';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { quasarConfig } from './quasarConfig';
 import { useForm } from 'vee-validate';
+
+const props = defineProps({
+  submit: {
+    required: true,
+    type: Function,
+  }
+});
 
 const signupStore = useSignupStore();
 
@@ -85,6 +94,7 @@ const { defineField, errors } = useForm({
   },
 });
 
+const nationalityRef = ref<HTMLInputElement | null>(null);
 const [nationality, nationalityProps] = defineField("nationality", quasarConfig);
 watch(nationality, (newNationality) => {
   signupStore.personalInfo.nationality = newNationality;
@@ -122,13 +132,28 @@ watch(errors, (updatedErrors) => {
 });
 
 
-const options = ref(['Kazakh', , 'Russian', 'Ukrainian'])
+const options = ref(['Kazakh', , 'Russian', 'Ukrainian']);
+
+onMounted(() => {
+  if (nationalityRef.value) {
+    nationalityRef.value.focus();
+  }
+});
+
+watch(signupStore.personalInfo, () => {
+  console.log('Fullfilled');
+  console.log(Object.values(signupStore.personalInfo).filter(value => !value));
+  
+  if (!Object.values(signupStore.personalInfo).filter(value => !value).length) {
+    signupStore.personalInfoFullfilled = true;
+  };
+})
 </script>
 
 <style lang="scss" scoped>
 .personalInfoForm {
   margin-top: 24px;
-  width: 70%;
+  width: 470px;
 
   > .personal__input {
     margin-bottom: 10px;

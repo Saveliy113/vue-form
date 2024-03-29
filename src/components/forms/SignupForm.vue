@@ -19,22 +19,16 @@
       </div>
       <h5 v-if="route.query.step === 'card'">Link a card</h5>
       <Transition name="fade" mode="out-in">
-        <EmailForm v-if="!route.query.step" />
-        <PhoneForm v-else-if="route.query.step === 'phone'" />
-        <PasswordForm v-else-if="route.query.step === 'password'" />
-        <PersonalInfoForm v-else-if="route.query.step === 'personal-info'" />
+        <EmailForm v-if="!route.query.step" :submit="onSubmit" />
+        <PhoneForm v-else-if="route.query.step === 'phone'" :submit="onSubmit" />
+        <PasswordForm v-else-if="route.query.step === 'password'" :submit="onSubmit" />
+        <PersonalInfoForm v-else-if="route.query.step === 'personal-info'" :submit="onSubmit" />
         <AddressForm v-else-if="route.query.step === 'address'" />
-        <LinkCardForm v-else-if="route.query.step === 'card'" />
+        <LinkCardForm v-else-if="['card', 'card-success'].includes(String(route.query.step))" />
       </Transition>
       <q-btn
         @click="onSubmit"
-        :disable="
-          (!route.query.step && signupStore.errors.email) ||
-          (route.query.step === 'phone' && signupStore.errors.phone) ||
-          (route.query.step === 'password' && signupStore.errors.password) ||
-          (route.query.step === 'personal-info' && signupStore.errors.personalInfo) ||
-          (route.query.step === 'address' && signupStore.errors.addressInfo) 
-        "
+        :disable="nextButtonDisabled"
         class="btn"
         rounded
         color="blue"
@@ -56,10 +50,23 @@ import PasswordForm from "./PasswordForm.vue";
 import PersonalInfoForm from "./PersonalInfoForm.vue";
 import AddressForm from "./AddressForm.vue";
 import LinkCardForm from "./LinkCardForm.vue";
+import { computed } from "vue";
 
 const route = useRoute();
 const router = useRouter();
 const signupStore = useSignupStore();
+
+const submit = () => {
+  console.log(123)
+}
+
+const nextButtonDisabled = computed(() => {
+  return (!route.query.step && (signupStore.errors.email || !signupStore.email)) ||
+          (route.query.step === 'phone' && (signupStore.errors.phone || !signupStore.phone)) ||
+          (route.query.step === 'password' && (signupStore.errors.password || !signupStore.password)) ||
+          (route.query.step === 'personal-info' && (signupStore.errors.personalInfo || !signupStore.personalInfoFullfilled)) ||
+          (route.query.step === 'address' && (signupStore.errors.addressInfo || !signupStore.addressInfoFullfilled)) 
+})
 
 const onSubmit = () => {
   switch (route.query.step) {

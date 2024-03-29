@@ -26,7 +26,12 @@
         <q-icon name="east" />
       </div>
     </div>
-    <p class="next__btn">Not now</p>
+    <p class="next__btn" @click="router.push({
+      path: '/',
+      query: {
+        step: 'card'
+      }
+    })">Not now</p>
   </div>
 </template>
 
@@ -34,9 +39,10 @@
 import SignupForm from "src/components/forms/SignupForm.vue";
 import { ref } from "vue";
 import { useMeta } from "quasar";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 
 // Page meta
 const meta = ref({

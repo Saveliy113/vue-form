@@ -92,12 +92,17 @@ watch(errors, (updatedErrors) => {
   } else signupStore.errors.addressInfo = false;
 });
 
+watch(signupStore.addressInfo, () => {
+  if (!Object.values(signupStore.addressInfo).filter(value => !value).length) {
+    signupStore.addressInfoFullfilled = true;
+  };
+})
 </script>
 
 <style lang="scss" scoped>
 @import '../../css/quasar.variables.scss';
 .address__form {
-  width: 70%;
+  width: 470px;
 
   > .address__input {
     margin-top: 24px;

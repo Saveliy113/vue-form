@@ -22,7 +22,7 @@
         <h4>Confirm your phone</h4>
         <p class="code__text">Code sent to {{ `+7${signupStore.phone}` }}</p>
         <p class="resend__btn">Resend code</p>
-        <OtpInput />
+        <!-- <OtpInput /> -->
       </div>
       <OtpInput :input-length="6" />
     </div>
@@ -51,7 +51,7 @@ const signupStore = useSignupStore();
 
   > .verify__wrapper {
     position: relative;
-    width: 45%;
+    width: 700px;
     height: 100%;
     background-color: white;
     margin: 0 auto;

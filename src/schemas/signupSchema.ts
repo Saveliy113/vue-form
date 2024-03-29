@@ -40,3 +40,17 @@ export const addressSchema = yup.object({
   district: yup.string().required('Type district'),
   agreement: yup.boolean().oneOf([true], 'You must agree with PayPal policies')
 })
+
+export const cardSchema = yup.object({
+  card: yup.string().required('Type card number').matches(/^\d{4} \d{4} \d{4} \d{4}$/, {
+    message: 'Type card number fully'
+  }),
+  cardType: yup.string().required('Set card type'),
+  expirationDate: yup.string().required('Set expiration date').matches(/^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/,  {
+    message: 'Type date fully'
+  }),
+  securityCode: yup.string().required('Type security code').matches(/\d{3}$/, {
+    message: 'Must include 3 digits'
+  }),
+  billingAddress: yup.string().required('Type card billing address'),
+})

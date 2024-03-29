@@ -5,7 +5,8 @@
         <img src="/logo.png" alt="paypal_logo" />
       </router-link>
       <h5>Link a card</h5>
-      <div class="linkCard__form">
+
+      <div v-if="route.query.step === 'card'"  class="linkCard__form">
         <div class="banner bg-grey-2">
           <q-icon class="icon text-grey-5" name="credit_card" />
         </div>
@@ -14,27 +15,142 @@
           type="text"
           label="Debit or credit card number"
           placeholder="Enter card number"
+          mask="#### #### #### ####"
+          ref="cardRef"
           outlined
+          hide-bottom-space
+          v-model="card"
+          v-bind="cardProps"
         />
-        <q-select label="Card type" placeholder="Select your card type" class="card__input" outlined :options="['Visa', 'Mastercard']" />
+        <q-select 
+          label="Card type" 
+          placeholder="Select your card type" 
+          class="card__input" 
+          outlined 
+          hide-bottom-space
+          :options="['Visa', 'Mastercard']" 
+          v-model="cardType"
+          v-bind="cardTypeProps"
+        />
         <q-input
-        class="card__input"
-        type="text"
-        label="Security code"
-        placeholder="Enter card number"
-        outlined
+          class="card__input"
+          type="text"
+          label="Expiration date"
+          placeholder="Enter expiration date"
+          mask="##.##.####"
+          outlined
+          hide-bottom-space
+          v-model="expirationDate"
+          v-bind="expirationDateProps"
         />
-        <q-select label="Billing address" class="card__input" outlined :options="['Koktem-1, 14, Almaty, Almaty', 'Koktem-2, 20, Almaty, Kazakhstan']" />
-        <q-btn class="link__btn" color="primary" rounded>
+        <q-input
+          class="card__input"
+          type="password"
+          maxlength="3"
+          label="Security code"
+          placeholder="Enter card number"
+          outlined
+          hide-bottom-space
+          v-model="securityCode"
+          v-bind="securityCodeProps"
+        />
+        <q-select 
+          label="Billing address" 
+          class="card__input" 
+          outlined 
+          hide-bottom-space
+          :options="['Koktem-1, 14, Almaty, Almaty', 'Koktem-2, 20, Almaty, Kazakhstan']" 
+          v-model="billingAddress"
+          v-bind="billingAddressProps"
+        />
+      </div>
+
+      <div v-else-if="route.query.step === 'card-success'" class="success">
+        <div class="icon">
+          <q-icon class="done" name="done" />
+        </div>
+        <div class="shadow"></div>
+      </div>
+
+      <q-btn @click="router.push({
+        path: '/',
+        query: {
+          step: 'card-success',
+        }
+        })" 
+        class="link__btn" 
+        color="primary" 
+        rounded
+        :disabled="signupStore.errors.cardInfo || !signupStore.cardInfoFullfilled"
+      >
           Link Card
         </q-btn>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { cardSchema } from 'src/schemas/signupSchema';
+import { useSignupStore } from 'src/stores/signupStore';
+import { useForm } from 'vee-validate';
+import { onMounted, ref, watch } from 'vue';
+import { quasarConfig } from './quasarConfig';
+import { useRoute, useRouter } from 'vue-router';
 
+const route = useRoute();
+const router = useRouter();
+
+const signupStore = useSignupStore();
+
+const { defineField, errors } = useForm({
+  validationSchema: cardSchema,
+  initialValues: {
+    card: signupStore.cardInfo.card,
+    cardType: signupStore.cardInfo.cardType,
+    expirationDate: signupStore.cardInfo.expirationDate,
+    securityCode: signupStore.cardInfo.securityCode,
+    billingAddress: signupStore.cardInfo.billingAddress,
+  },
+});
+
+const cardRef = ref<HTMLInputElement | null>(null);
+const [card, cardProps] = defineField("card", quasarConfig);
+watch(card, (newCard) => {
+  signupStore.cardInfo.card = newCard;
+});
+
+const [cardType, cardTypeProps] = defineField("cardType", quasarConfig);
+watch(cardType, (newCardType) => {
+  signupStore.cardInfo.cardType = newCardType;
+});
+
+const [expirationDate, expirationDateProps] = defineField("expirationDate", quasarConfig);
+watch(expirationDate, (newExpirationDate) => {
+  signupStore.cardInfo.expirationDate = newExpirationDate;
+});
+
+const [securityCode, securityCodeProps] = defineField("securityCode", quasarConfig);
+watch(securityCode, (newSecurityCode) => {
+  signupStore.cardInfo.securityCode = newSecurityCode;
+});
+
+const [billingAddress, billingAddressProps] = defineField("billingAddress", quasarConfig);
+watch(billingAddress, (newBillingAddress) => {
+  signupStore.cardInfo.billingAddress = newBillingAddress;
+});
+
+watch(signupStore.cardInfo, () => {
+  console.log(Object.values(signupStore.cardInfo).filter(value => !value))
+  if (!Object.values(signupStore.cardInfo).filter(value => !value).length) {
+    signupStore.cardInfoFullfilled = true;
+  };
+})
+
+onMounted(() => {
+  if (cardRef.value) {
+    cardRef.value.focus();
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -49,7 +165,7 @@
 
   > .wrapper {
     position: relative;
-    width: 45%;
+    width: 700px;
     height: 100%;
     background-color: white;
     margin: 0 auto;
@@ -59,8 +175,8 @@
 
     > .logo__link {
       margin-top: 20px;
-    width: 30px;
-    height: 30px;
+      width: 30px;
+      height: 30px;
 
     > img {
       width: 100%;
@@ -75,8 +191,7 @@
     }
 
     > .linkCard__form {
-      width: 60%;
-      border: 1px solid red;
+      width: 470px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -98,15 +213,47 @@
         width: 100%;
         margin-top: 15px
       }
+    }
 
-      > .link__btn {
+    > .success {
+      position: relative;
+      
+      > .icon {
+        width: 70px;
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 50px;
+        color: white;
+        border-radius: 50%;
+        background-color: #308A67;
+        z-index: 1;
+        > .done {
+          z-index: 9;
+        }
+      }
+
+      > .shadow {
+        position: absolute;
+        bottom: 0;
+        right: 50%;
+        transform: translateX(50%);
+        z-index: 0;
+        width: 70px;
+        height: 20px;
+        border-radius: 100%;
+        background-color: #CFCDCE;
+      }
+    }
+
+    > .link__btn {
+        width: 45%;
         text-transform: none;
         margin-top: 20px;
         padding-top: 10px;
         padding-bottom: 10px;
-        width: 100%;
       }
-    }
   }
 
 }

@@ -28,8 +28,7 @@ const router = useRouter();
 <style lang="scss" scoped>
 .header {
   position: relative;
-  border: 1px solid red;
-  width: 35%;
+  width: 470px;
   margin: 0 auto;
   padding: 20px;
   display: flex;

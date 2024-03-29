@@ -10,19 +10,30 @@
       number and agree to receive text messages. Carrier fees may apply."
       v-model="phone"
       v-bind="phoneProps"
+      @keydown.enter="submit"
+      ref="phoneRef"
       outlined
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useSignupStore } from "src/stores/signUpStore";
+import { onMounted, ref, watch } from "vue";
+import { useSignupStore } from "src/stores/signupStore";
 import { useForm } from "vee-validate";
-import { watch } from "vue";
 import { quasarConfig } from "./quasarConfig";
 import { phoneSchema } from "src/schemas/signupSchema";
 
 const signupStore = useSignupStore();
+
+const props = defineProps({
+  submit: {
+    required: true,
+    type: Function,
+  }
+});
+
+const phoneRef = ref<HTMLInputElement | null>(null)
 
 const { defineField, errors } = useForm({
   validationSchema: phoneSchema,
@@ -41,11 +52,17 @@ watch(errors, (updatedErrors) => {
     signupStore.errors.phone = true;
   } else signupStore.errors.phone = false;
 });
+
+onMounted(() => {
+  if (phoneRef.value) {
+    phoneRef.value.focus();
+  }
+})
 </script>
 
 <style lang="scss" scoped>
 .phone__form {
-  width: 55%;
+  width: 470px;
 
   > p {
     font-size: 0.8rem;
