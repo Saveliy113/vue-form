@@ -4,7 +4,7 @@
       <router-link to="/" class="logo__link">
         <img src="/logo.png" alt="paypal_logo" />
       </router-link>
-      <h5>Link a card</h5>
+      <h5 v-if="route.query.step === 'card'">Link a card</h5>
 
       <div v-if="route.query.step === 'card'"  class="linkCard__form">
         <div class="banner bg-grey-2">
@@ -66,10 +66,16 @@
       </div>
 
       <div v-else-if="route.query.step === 'card-success'" class="success">
-        <div class="icon">
-          <q-icon class="done" name="done" />
+        <div class="success__icon">
+          <div class="icon">
+            <q-icon name="done" />
+          </div>
+          <div class="shadow"></div>
         </div>
-        <div class="shadow"></div>
+
+        <p>
+          {{ `You linked your ${signupStore.cardInfo.cardType} Debit ●●${signupStore.cardInfo.card.slice(-4)}` }}
+        </p>
       </div>
 
       <q-btn @click="router.push({
@@ -83,7 +89,7 @@
         rounded
         :disabled="signupStore.errors.cardInfo || !signupStore.cardInfoFullfilled"
       >
-          Link Card
+          {{ route.query.step === 'card' ? 'Link Card' : 'Done'}}
         </q-btn>
     </div>
   </div>
@@ -216,9 +222,17 @@ onMounted(() => {
     }
 
     > .success {
+      margin-top: 80px;
       position: relative;
-      
-      > .icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      > .success__icon {
+        position: relative;
+
+        > .icon {
+        position: relative;
         width: 70px;
         height: 70px;
         display: flex;
@@ -228,15 +242,12 @@ onMounted(() => {
         color: white;
         border-radius: 50%;
         background-color: #308A67;
-        z-index: 1;
-        > .done {
-          z-index: 9;
-        }
+        z-index: 999;
       }
 
       > .shadow {
         position: absolute;
-        bottom: 0;
+        bottom: -3px;
         right: 50%;
         transform: translateX(50%);
         z-index: 0;
@@ -244,6 +255,14 @@ onMounted(() => {
         height: 20px;
         border-radius: 100%;
         background-color: #CFCDCE;
+      }
+      }
+
+      > p {
+        margin: 0;
+        margin-top: 50px;
+        font-weight: 400;
+        font-size: 1rem;
       }
     }
 
