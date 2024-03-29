@@ -40,12 +40,13 @@ import SignupForm from "src/components/forms/SignupForm.vue";
 import { ref } from "vue";
 import { useMeta } from "quasar";
 import { useRoute, useRouter } from "vue-router";
+import {  MetaData  }  from './types'
 
 const route = useRoute();
 const router = useRouter();
 
 // Page meta
-const meta = ref({
+const meta = ref<MetaData>({
   title: "Sign Up",
   titleTemplate: (title: string): string => `${title} | Paypal`,
 });
