@@ -59,7 +59,7 @@
           class="card__input" 
           outlined 
           hide-bottom-space
-          :options="['Koktem-1, 14, Almaty, Almaty', 'Koktem-2, 20, Almaty, Kazakhstan']" 
+          :options="['Kazakhstan, Almaty, address_1', 'Kazakhstan, Almaty, address_2']" 
           v-model="billingAddress"
           v-bind="billingAddressProps"
         />
