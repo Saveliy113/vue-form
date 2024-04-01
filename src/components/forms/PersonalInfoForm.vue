@@ -7,6 +7,7 @@
       hide-bottom-space
       v-model="nationality" 
       v-bind="nationalityProps" 
+      ref="nationalityRef"
       :options="options" 
       label="Nationality" 
     />  
@@ -60,6 +61,7 @@
           hide-bottom-space
           v-model="birthDate"
           v-bind="birthDateProps" 
+          @keydown.enter="submit"
         />
   </div>
 </template>
@@ -67,13 +69,23 @@
 <script setup lang="ts">
 import { personalInfoSchema } from 'src/schemas/signupSchema';
 import { useSignupStore } from 'src/stores/signupStore';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { quasarConfig } from './quasarConfig';
 import { useForm } from 'vee-validate';
+import { PersonalInfo } from 'src/stores/types';
+
+const options = ref(['Kazakh', , 'Russian', 'Ukrainian']);
+
+const props = defineProps({
+  submit: {
+    required: true,
+    type: Function,
+  }
+});
 
 const signupStore = useSignupStore();
 
-const { defineField, errors } = useForm({
+const { defineField, errors } = useForm<PersonalInfo>({
   validationSchema: personalInfoSchema,
   initialValues: {
       nationality:  signupStore.personalInfo.nationality,
@@ -85,6 +97,7 @@ const { defineField, errors } = useForm({
   },
 });
 
+const nationalityRef = ref<HTMLInputElement | null>(null);
 const [nationality, nationalityProps] = defineField("nationality", quasarConfig);
 watch(nationality, (newNationality) => {
   signupStore.personalInfo.nationality = newNationality;
@@ -121,14 +134,23 @@ watch(errors, (updatedErrors) => {
   } else signupStore.errors.personalInfo = false;
 });
 
+onMounted(() => {
+  if (nationalityRef.value) {
+    nationalityRef.value.focus();
+  }
+});
 
-const options = ref(['Kazakh', , 'Russian', 'Ukrainian'])
+watch(signupStore.personalInfo, () => {
+  if (!Object.values(signupStore.personalInfo).filter(value => !value).length) {
+    signupStore.personalInfoFullfilled = true;
+  };
+})
 </script>
 
 <style lang="scss" scoped>
 .personalInfoForm {
   margin-top: 24px;
-  width: 70%;
+  width: 470px;
 
   > .personal__input {
     margin-bottom: 10px;
@@ -146,8 +168,12 @@ const options = ref(['Kazakh', , 'Russian', 'Ukrainian'])
       > .block__input {
         width: 50%;
       }
-      
+  }
+}
 
+@media only screen and (max-width: 480px) {
+  .personalInfoForm {
+    width: 100%;
   }
 }
 </style>

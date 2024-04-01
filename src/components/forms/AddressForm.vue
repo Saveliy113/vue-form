@@ -1,6 +1,7 @@
 <template>
   <div class="address__form">
     <q-input
+      ref="addressRef"
       class="address__input"
       type="text"
       label="Street name and house number"
@@ -51,12 +52,13 @@
 import { addressSchema } from 'src/schemas/signupSchema';
 import { useSignupStore } from 'src/stores/signupStore';
 import { useForm } from 'vee-validate';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { quasarConfig } from './quasarConfig';
+import { AddressInfo } from 'src/stores/types';
 
 const signupStore = useSignupStore();
 
-const { defineField, errors } = useForm({
+const { defineField, errors } = useForm<AddressInfo>({
   validationSchema: addressSchema,
   initialValues: {
     address: signupStore.addressInfo.address,
@@ -66,6 +68,7 @@ const { defineField, errors } = useForm({
   },
 });
 
+const addressRef = ref<HTMLInputElement | null>(null)
 const [address, addressProps] = defineField("address", quasarConfig);
 watch(address, (newaddress) => {
   signupStore.addressInfo.address = newaddress;
@@ -92,12 +95,23 @@ watch(errors, (updatedErrors) => {
   } else signupStore.errors.addressInfo = false;
 });
 
+watch(signupStore.addressInfo, () => {
+  if (!Object.values(signupStore.addressInfo).filter(value => !value).length) {
+    signupStore.addressInfoFullfilled = true;
+  };
+})
+
+onMounted(() => {
+  if (addressRef.value) {
+    addressRef.value.focus();
+  }
+})
 </script>
 
 <style lang="scss" scoped>
 @import '../../css/quasar.variables.scss';
 .address__form {
-  width: 70%;
+  width: 470px;
 
   > .address__input {
     margin-top: 24px;
@@ -128,6 +142,12 @@ watch(errors, (updatedErrors) => {
         color: $primary;
       }
     }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .address__form {
+    width: 100%;
   }
 }
 </style>

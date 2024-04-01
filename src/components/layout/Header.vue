@@ -2,7 +2,7 @@
   <div class="header">
     <Transition name="fade">
       <q-btn
-        v-if="route.query.step"
+        v-if="route.query.step && route.query.step !== 'services'"
         class="back__btn"
         @click="router.go(-1)"
         flat
@@ -28,8 +28,7 @@ const router = useRouter();
 <style lang="scss" scoped>
 .header {
   position: relative;
-  border: 1px solid red;
-  width: 35%;
+  width: 470px;
   margin: 0 auto;
   padding: 20px;
   display: flex;
@@ -50,6 +49,12 @@ const router = useRouter();
       height: 100%;
       object-fit: contain;
     }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .header {
+    width: 95%;
   }
 }
 </style>

@@ -29,6 +29,7 @@
   > p {
     margin: 0;
     color: gray;
+    white-space: nowrap;
   }
 
   > .links {
@@ -39,6 +40,13 @@
       color: unset;
       font-weight: 500;
     }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .footer {
+    width: 95%;
+    padding: 0 5px;
   }
 }
 </style>

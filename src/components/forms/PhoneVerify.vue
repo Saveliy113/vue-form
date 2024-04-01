@@ -22,7 +22,6 @@
         <h4>Confirm your phone</h4>
         <p class="code__text">Code sent to {{ `+7${signupStore.phone}` }}</p>
         <p class="resend__btn">Resend code</p>
-        <OtpInput />
       </div>
       <OtpInput :input-length="6" />
     </div>
@@ -30,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSignupStore } from "src/stores/signUpStore";
+import { useSignupStore } from "src/stores/signupStore";
 import OtpInput from "../OtpInput.vue";
 import { useRouter } from "vue-router";
 
@@ -51,7 +50,7 @@ const signupStore = useSignupStore();
 
   > .verify__wrapper {
     position: relative;
-    width: 45%;
+    width: 700px;
     height: 100%;
     background-color: white;
     margin: 0 auto;
@@ -93,6 +92,15 @@ const signupStore = useSignupStore();
           transform: scale(93%);
         }
       }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .phone__verify {
+    > .verify__wrapper {
+      width: 100%;
+      padding: 0 10px;
     }
   }
 }

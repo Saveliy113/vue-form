@@ -7,6 +7,8 @@
       :raw="true"
       v-model="password"
       v-bind="passwordProps"
+      @keydown.enter="submit"
+      ref="passwordRef"
       outlined
     />
     <Transition name="fade">
@@ -20,14 +22,24 @@
 
 <script setup lang="ts">
 import { passwordSchema } from "src/schemas/signupSchema";
-import { useSignupStore } from "src/stores/signUpStore";
+import { useSignupStore } from "src/stores/signupStore";
 import { useForm } from "vee-validate";
-import { watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { quasarConfig } from "./quasarConfig";
+import { RootState } from "src/stores/types";
+
+const props = defineProps({
+  submit: {
+    required: true,
+    type: Function,
+  }
+});
+
+const passwordRef = ref<HTMLInputElement | null>(null)
 
 const signupStore = useSignupStore();
 
-const { defineField, errors } = useForm({
+const { defineField, errors } = useForm<Pick<RootState, 'password'>>({
   validationSchema: passwordSchema,
   initialValues: {
     password: signupStore.password,
@@ -44,11 +56,17 @@ watch(errors, (updatedErrors) => {
     signupStore.errors.password = true;
   } else signupStore.errors.password = false;
 });
+
+onMounted(() => {
+  if (passwordRef.value) {
+    passwordRef.value.focus();
+  }
+})
 </script>
 
 <style lang="scss" scoped>
 .password__form {
-  width: 55%;
+  width: 470px;
 
   > .hints {
     position: relative;
@@ -59,6 +77,12 @@ watch(errors, (updatedErrors) => {
       margin: 0;
       font-size: 0.8rem;
     }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .password__form {
+    width: 100%;
   }
 }
 </style>

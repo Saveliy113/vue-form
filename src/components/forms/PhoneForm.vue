@@ -10,21 +10,33 @@
       number and agree to receive text messages. Carrier fees may apply."
       v-model="phone"
       v-bind="phoneProps"
+      @keydown.enter="submit"
+      ref="phoneRef"
       outlined
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useSignupStore } from "src/stores/signUpStore";
+import { onMounted, ref, watch } from "vue";
+import { useSignupStore } from "src/stores/signupStore";
 import { useForm } from "vee-validate";
-import { watch } from "vue";
 import { quasarConfig } from "./quasarConfig";
 import { phoneSchema } from "src/schemas/signupSchema";
+import { RootState } from "src/stores/types";
 
 const signupStore = useSignupStore();
 
-const { defineField, errors } = useForm({
+const props = defineProps({
+  submit: {
+    required: true,
+    type: Function,
+  }
+});
+
+const phoneRef = ref<HTMLInputElement | null>(null)
+
+const { defineField, errors } = useForm<Pick<RootState, 'phone'>>({
   validationSchema: phoneSchema,
   initialValues: {
     phone: signupStore.phone,
@@ -41,15 +53,29 @@ watch(errors, (updatedErrors) => {
     signupStore.errors.phone = true;
   } else signupStore.errors.phone = false;
 });
+
+onMounted(() => {
+  signupStore.loading = false;
+
+  if (phoneRef.value) {
+    phoneRef.value.focus();
+  }
+})
 </script>
 
 <style lang="scss" scoped>
 .phone__form {
-  width: 55%;
+  width: 470px;
 
   > p {
     font-size: 0.8rem;
     color: gray;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .phone__form {
+    width: 100%;
   }
 }
 </style>

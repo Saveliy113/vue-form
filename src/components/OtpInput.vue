@@ -17,11 +17,17 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, ref, onBeforeUpdate, watch } from "vue";
+import { useSignupStore } from "src/stores/signupStore";
+import { defineProps, computed, ref, onBeforeUpdate, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
+const signupStore = useSignupStore();
+
 const props = defineProps({
-  inputLength: Number,
+  inputLength: {
+    type: Number,
+    required: true
+  },
 });
 
 const router = useRouter();
@@ -29,7 +35,7 @@ const router = useRouter();
 // Количество инпутов
 const length = computed(() => props.inputLength);
 
-const fields = ref([]);
+const fields = ref<HTMLInputElement[] | []>([]);
 const fieldValues = ref([]);
 const otp = ref("");
 
@@ -40,10 +46,16 @@ watch(
     if (length.value === notNullFields.length) {
       otp.value = fieldValues.value.filter((value) => value).join("");
       fields.value[length.value - 1].blur();
-      router.push({
-        path: "/",
-        query: { step: "password" },
-      });
+
+      signupStore.loading = true;
+      
+      setTimeout(() => {
+        signupStore.loading = false;
+        router.push({
+          path: "/",
+          query: { step: "password" },
+        });
+      }, 2500);
     }
   },
   { deep: true }
@@ -54,14 +66,14 @@ onBeforeUpdate(() => {
 });
 
 // Получаем все инпуты, записываем в fields в соответствии с порядковым номером
-const updateFieldRef = (element, index) => {
+const updateFieldRef = (element: HTMLInputElement, index: number) => {
   if (element) {
     fields.value[index] = element;
   }
 };
 
 // Фокус элементов
-const focus = (index) => {
+const focus = (index: number) => {
   if (index >= 0) {
     if (index < length.value) {
       fields.value[index].select();
@@ -89,6 +101,10 @@ const onKeyUp = (evnt, index) => {
     focus(index + 1);
   }
 };
+
+onMounted(() => {
+  focus(0);
+});
 </script>
 
 <style lang="scss" scoped>

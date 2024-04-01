@@ -4,6 +4,8 @@
       class="input"
       v-model="email"
       v-bind="emailProps"
+      @keydown.enter="submit"
+      ref="emailInput"
       type="email"
       label="Your email"
       outlined
@@ -13,19 +15,27 @@
 </template>
 
 <script setup lang="ts">
-import { useSignupStore } from "src/stores/signUpStore";
+import { ref } from 'vue';
+import { useSignupStore } from "src/stores/signupStore";
 import { useForm } from "vee-validate";
-import { watch } from "vue";
+import { onMounted, watch } from "vue";
 import { quasarConfig } from "./quasarConfig";
 import { emailSchema } from "src/schemas/signupSchema";
+import { RootState } from 'src/stores/types';
 
 const signupStore = useSignupStore();
 
-const { defineField, errors } = useForm({
+const props = defineProps({
+  submit: {
+    required: true,
+    type: Function,
+  }
+})
+
+const { defineField, errors } = useForm<Pick<RootState, 'email'>>({
   validationSchema: emailSchema,
   initialValues: {
     email: signupStore.email,
-    phone: signupStore.phone,
   },
 });
 
@@ -39,10 +49,24 @@ watch(errors, (updatedErrors) => {
     signupStore.errors.email = true;
   } else signupStore.errors.email = false;
 });
+
+const inputRef = ref<HTMLInputElement | null>(null);
+
+onMounted(() => {
+  if (inputRef.value) {
+    inputRef.value.focus()
+  }
+})
 </script>
 
 <style lang="scss" scoped>
 .email__form {
-  width: 55%;
+  width: 470px;
+}
+
+@media only screen and (max-width: 480px) {
+  .email__form {
+    width: 100%;
+  }
 }
 </style>
