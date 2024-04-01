@@ -72,4 +72,10 @@ onMounted(() => {
     color: gray;
   }
 }
+
+@media only screen and (max-width: 480px) {
+  .phone__form {
+    width: 100%;
+  }
+}
 </style>

@@ -135,4 +135,10 @@ useMeta(meta.value);
       }
   }
 }
+
+@media only screen and (max-width: 480px) {
+  .services {
+    width: 95%;
+  }
+}
 </style>

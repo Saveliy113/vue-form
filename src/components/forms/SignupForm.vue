@@ -130,12 +130,22 @@ const onSubmit = () => {
   flex-direction: column;
   align-items: center;
 
+  > h5 {
+    white-space: nowrap;
+  }
+
   > .form__btn {
     margin-top: 30px;
   }
 
   > .btn {
     margin-top: 40px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .content__wrapper {
+    width: 95%;
   }
 }
 </style>

@@ -168,8 +168,12 @@ watch(signupStore.personalInfo, () => {
       > .block__input {
         width: 50%;
       }
-      
+  }
+}
 
+@media only screen and (max-width: 480px) {
+  .personalInfoForm {
+    width: 100%;
   }
 }
 </style>

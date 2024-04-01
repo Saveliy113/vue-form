@@ -79,4 +79,10 @@ onMounted(() => {
     }
   }
 }
+
+@media only screen and (max-width: 480px) {
+  .password__form {
+    width: 100%;
+  }
+}
 </style>

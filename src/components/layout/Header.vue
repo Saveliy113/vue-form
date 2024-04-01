@@ -51,4 +51,10 @@ const router = useRouter();
     }
   }
 }
+
+@media only screen and (max-width: 480px) {
+  .header {
+    width: 95%;
+  }
+}
 </style>

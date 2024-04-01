@@ -63,4 +63,10 @@ onMounted(() => {
 .email__form {
   width: 470px;
 }
+
+@media only screen and (max-width: 480px) {
+  .email__form {
+    width: 100%;
+  }
+}
 </style>

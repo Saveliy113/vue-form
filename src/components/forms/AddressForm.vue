@@ -144,4 +144,10 @@ onMounted(() => {
     }
   }
 }
+
+@media only screen and (max-width: 480px) {
+  .address__form {
+    width: 100%;
+  }
+}
 </style>

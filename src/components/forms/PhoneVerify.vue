@@ -95,4 +95,13 @@ const signupStore = useSignupStore();
     }
   }
 }
+
+@media only screen and (max-width: 480px) {
+  .phone__verify {
+    > .verify__wrapper {
+      width: 100%;
+      padding: 0 10px;
+    }
+  }
+}
 </style>

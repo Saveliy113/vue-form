@@ -300,6 +300,17 @@ onMounted(() => {
         padding-bottom: 10px;
       }
   }
+}
 
+@media only screen and (max-width: 480px) {
+  .linkCard__form-container {
+    > .wrapper {
+      width: 100%;
+
+      > .linkCard__form {
+        width: 95%;
+      }
+    }
+  }
 }
 </style>
