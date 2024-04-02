@@ -46,7 +46,7 @@
 @media only screen and (max-width: 480px) {
   .footer {
     width: 95%;
-    padding: 0 5px;
+    padding: 10px 5px;
   }
 }
 </style>

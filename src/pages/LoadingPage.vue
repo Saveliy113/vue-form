@@ -1,19 +1,41 @@
 <template>
-  <div class="loading__page">
+  <div class="loading__page" ref="loadingRef">
     <div class="loader"></div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+
+const loadingRef = ref<HTMLDivElement | null>(null);
+
+const resizeLoading = function () {
+  if (loadingRef.value) {
+    loadingRef.value.style.height = `${window.innerHeight}px`;
+  }
+}
+
+onMounted(() => {
+  resizeLoading();
+  window.addEventListener('resize', resizeLoading);
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', resizeLoading);
+})
+</script>
 
 <style lang="scss" scoped>
 @import '../css/quasar.variables.scss';
 
 .loading__page {
   width: 100%;
-  height: 100vh;
+  // height: 100vh;
   background-color: #FFFFFF;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 
   > .loader {
     width: 100px;
